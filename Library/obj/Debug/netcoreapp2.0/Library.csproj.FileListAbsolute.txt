@@ -1,0 +1,11 @@
+C:\Projects\RESTful API ASP .NET Core Example\Library\bin\Debug\netcoreapp2.0\Library.deps.json
+C:\Projects\RESTful API ASP .NET Core Example\Library\bin\Debug\netcoreapp2.0\Library.runtimeconfig.json
+C:\Projects\RESTful API ASP .NET Core Example\Library\bin\Debug\netcoreapp2.0\Library.runtimeconfig.dev.json
+C:\Projects\RESTful API ASP .NET Core Example\Library\bin\Debug\netcoreapp2.0\Library.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library\bin\Debug\netcoreapp2.0\Library.pdb
+C:\Projects\RESTful API ASP .NET Core Example\Library\obj\Debug\netcoreapp2.0\Library.csprojResolveAssemblyReference.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library\obj\Debug\netcoreapp2.0\Library.csproj.CoreCompileInputs.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library\obj\Debug\netcoreapp2.0\Library.AssemblyInfoInputs.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library\obj\Debug\netcoreapp2.0\Library.AssemblyInfo.cs
+C:\Projects\RESTful API ASP .NET Core Example\Library\obj\Debug\netcoreapp2.0\Library.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library\obj\Debug\netcoreapp2.0\Library.pdb

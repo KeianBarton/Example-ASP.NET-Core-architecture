@@ -1,0 +1,14 @@
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.IntegrationTests.deps.json
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.IntegrationTests.runtimeconfig.json
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.IntegrationTests.runtimeconfig.dev.json
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.IntegrationTests.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.csprojResolveAssemblyReference.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.csproj.CoreCompileInputs.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.AssemblyInfoInputs.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.AssemblyInfo.cs
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.IntegrationTests.pdb
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.pdb

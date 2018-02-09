@@ -1,0 +1,13 @@
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Library.Tests.deps.json
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Library.Tests.runtimeconfig.json
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Library.Tests.runtimeconfig.dev.json
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Library.Tests.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\obj\Debug\netcoreapp2.0\Library.Tests.csproj.CoreCompileInputs.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\obj\Debug\netcoreapp2.0\Library.Tests.AssemblyInfoInputs.cache
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\obj\Debug\netcoreapp2.0\Library.Tests.AssemblyInfo.cs
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\bin\Debug\netcoreapp2.0\Library.Tests.pdb
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\obj\Debug\netcoreapp2.0\Library.Tests.dll
+C:\Projects\RESTful API ASP .NET Core Example\Library.Tests\obj\Debug\netcoreapp2.0\Library.Tests.pdb
