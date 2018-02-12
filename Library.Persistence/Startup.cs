@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Library.Persistence
 {
@@ -19,9 +20,9 @@ namespace Library.Persistence
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<ApplicationDbContext>(opt =>
-                    opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddEntityFrameworkSqlServer();
+            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
             services.AddMvc();
         }
 

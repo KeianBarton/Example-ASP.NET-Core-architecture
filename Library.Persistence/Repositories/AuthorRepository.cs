@@ -3,6 +3,7 @@ using Library.Domain.Persistence;
 using Library.Domain.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Library.Persistence.Repositories
 {
@@ -17,32 +18,35 @@ namespace Library.Persistence.Repositories
 
         public void AddAuthor(Author author)
         {
-            throw new NotImplementedException();
+            _context.Authors.Add(author);
         }
 
         public bool AuthorExists(Guid authorId)
         {
-            throw new NotImplementedException();
+            return _context.Authors.Any(a => a.Id == authorId);
         }
 
         public void DeleteAuthor(Author author)
         {
-            throw new NotImplementedException();
+            _context.Authors.Remove(author);
         }
 
         public Author GetAuthor(Guid authorId)
         {
-            throw new NotImplementedException();
+            return _context.Authors.SingleOrDefault(a => a.Id == authorId);
         }
 
         public IEnumerable<Author> GetAuthors()
         {
-            throw new NotImplementedException();
+            return _context.Authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
         }
 
         public IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds)
         {
-            throw new NotImplementedException();
+            return _context.Authors.Where(a => authorIds.Contains(a.Id))
+                .OrderBy(a => a.FirstName)
+                .OrderBy(a => a.LastName)
+                .ToList();
         }
 
         public void UpdateAuthor(Author author)

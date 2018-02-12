@@ -3,6 +3,7 @@ using Library.Domain.Persistence;
 using Library.Domain.Persistence.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Library.Persistence.Repositories
 {
@@ -35,7 +36,7 @@ namespace Library.Persistence.Repositories
             throw new NotImplementedException();
         }
 
-        public void UpdateBookForAuthor(Book book)
+        public void UpdateBookForAuthor(Guid authorId, Book book)
         {
             throw new NotImplementedException();
         }

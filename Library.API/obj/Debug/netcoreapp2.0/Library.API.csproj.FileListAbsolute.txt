@@ -3,9 +3,9 @@ C:\Projects\RESTful API ASP .NET Core Example\Library.API\bin\Debug\netcoreapp2.
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\bin\Debug\netcoreapp2.0\Library.API.runtimeconfig.dev.json
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\bin\Debug\netcoreapp2.0\Library.API.dll
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\bin\Debug\netcoreapp2.0\Library.API.pdb
-C:\Projects\RESTful API ASP .NET Core Example\Library.API\obj\Debug\netcoreapp2.0\Library.API.csprojResolveAssemblyReference.cache
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\obj\Debug\netcoreapp2.0\Library.API.csproj.CoreCompileInputs.cache
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\obj\Debug\netcoreapp2.0\Library.API.AssemblyInfoInputs.cache
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\obj\Debug\netcoreapp2.0\Library.API.AssemblyInfo.cs
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\obj\Debug\netcoreapp2.0\Library.API.dll
 C:\Projects\RESTful API ASP .NET Core Example\Library.API\obj\Debug\netcoreapp2.0\Library.API.pdb
+C:\Projects\RESTful API ASP .NET Core Example\Library.API\obj\Debug\netcoreapp2.0\Library.API.csprojResolveAssemblyReference.cache
