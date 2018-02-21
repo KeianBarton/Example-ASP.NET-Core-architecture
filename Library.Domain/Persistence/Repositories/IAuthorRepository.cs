@@ -10,7 +10,7 @@ namespace Library.Domain.Persistence.Repositories
         Author GetAuthor(Guid authorId);
         IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds);
         void AddAuthor(Author author);
-        void DeleteAuthor(Author author);
+        void DeleteAuthor(Guid authorId);
         void UpdateAuthor(Author author);
         bool AuthorExists(Guid authorId);
     }

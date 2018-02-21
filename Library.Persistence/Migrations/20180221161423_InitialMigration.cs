@@ -29,7 +29,6 @@ namespace Library.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     AuthorId = table.Column<Guid>(nullable: false),
-                    AuthorId1 = table.Column<Guid>(nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     Title = table.Column<string>(maxLength: 100, nullable: false)
                 },
@@ -42,23 +41,12 @@ namespace Library.Persistence.Migrations
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Books_Authors_AuthorId1",
-                        column: x => x.AuthorId1,
-                        principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorId",
                 table: "Books",
                 column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorId1",
-                table: "Books",
-                column: "AuthorId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

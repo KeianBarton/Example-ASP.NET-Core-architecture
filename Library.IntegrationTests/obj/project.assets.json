@@ -13612,11 +13612,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.IntegrationTests\\Library.IntegrationTests.csproj",
+      "projectUniqueName": "C:\\Projects\\Example ASP.NET Core architecture\\Library.IntegrationTests\\Library.IntegrationTests.csproj",
       "projectName": "Library.IntegrationTests",
-      "projectPath": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.IntegrationTests\\Library.IntegrationTests.csproj",
+      "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.IntegrationTests\\Library.IntegrationTests.csproj",
       "packagesPath": "C:\\Users\\Keian.Barton\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.IntegrationTests\\obj\\",
+      "outputPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.IntegrationTests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
@@ -13637,8 +13637,8 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.Persistence\\Library.Persistence.csproj": {
-              "projectPath": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.Persistence\\Library.Persistence.csproj"
+            "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.Persistence.csproj": {
+              "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.Persistence.csproj"
             }
           }
         }

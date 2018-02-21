@@ -1,8 +1,9 @@
-﻿using GigHub.IntegrationTests;
-using Library.Domain.Entities;
+﻿using Library.Domain.Entities;
 using Library.Persistence;
 using Library.Persistence.Exceptions;
 using Library.Persistence.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -15,29 +16,37 @@ namespace Library.IntegrationTests.Persistence.Repositories
     {
         private BookRepository _bookRepository;
         private ApplicationDbContext _context;
+        private UnitOfWork _unitOfWork;
+        private IDbContextTransaction _transaction;
 
         [SetUp]
         public void SetUp()
         {
-            _context = new ApplicationDbContext();
+            var factory = new ApplicationDbContextFactory();
+            _context = factory.CreateDbContext(null);
             _bookRepository = new BookRepository(_context);
+            _unitOfWork = new UnitOfWork(_context);
+            _transaction = _context.Database.BeginTransaction();
         }
 
         [TearDown]
         public void TearDown()
         {
+            _transaction.Rollback();
+            _transaction = null;
             _context = null;
             _bookRepository = null;
         }
 
-        [Test, Isolated]
+        [Test]
         public void AddBookForAuthor_WhenCalledWithInvalidArgument_ShouldThrowException()
         {
             // Act / Assert
-            Assert.Throws<ArgumentNullException>(() => _bookRepository.AddBookForAuthor(new Guid(), null));
+            Assert.Throws<ArgumentNullException>(
+                () => _bookRepository.AddBookForAuthor(new Guid(), null));
         }
 
-        [Test, Isolated]
+        [Test]
         public void AddBookForAuthor_WhenCalled_ShouldAddBookToAuthorInDatabase()
         {
             // Arrange
@@ -56,18 +65,40 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Title = "Test Book",
                 Description = "Descriptive text"
             };
+            var numberOfBooksBeforeChanges = _context.Books.Count();
+            _context.Authors.Add(author);
+            _context.SaveChanges();
 
             // Act
             _bookRepository.AddBookForAuthor(author.Id, book);
+            _unitOfWork.Complete();
 
             // Assert
             var books = _context.Books.ToList();
-            var authorBooks = _context.Authors.First().Books.ToList();
-            Assert.That(books, Has.Count.EqualTo(1));
+            var authorBooks = _context.Authors.Include(a => a.Books)
+                .Single(a => a.Id == author.Id).Books.ToList();
+            Assert.That(books, Has.Count.EqualTo(numberOfBooksBeforeChanges + 1));
             Assert.That(authorBooks, Has.Count.EqualTo(1));
         }
 
-        [Test, Isolated]
+        [Test]
+        public void AddBookForAuthor_WhenArgumentIsInvalid_ShouldThrowException()
+        {
+            // Act / Assert
+            Assert.Throws<ArgumentNullException>(
+                () => _bookRepository.AddBookForAuthor(new Guid(), null));
+        }
+
+        [Test]
+        public void AddBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
+        {
+            // Act / Assert
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.AddBookForAuthor(new Guid(), new Book()));
+        }
+
+
+        [Test]
         public void AddBookForAuthor_WhenAuthorAlreadyHasBook_ShouldThrowException()
         {
             // Arrange
@@ -87,19 +118,14 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Genre = "Adventure"
             };
             _context.Authors.Add(author);
+            _context.SaveChanges();
 
             // Act / Assert
-            Assert.Throws<DataAlreadyExistsException>(() => _bookRepository.AddBookForAuthor(author.Id, book));
+            Assert.Throws<DataAlreadyExistsException>(
+                () => _bookRepository.AddBookForAuthor(author.Id, book));
         }
 
-        [Test, Isolated]
-        public void DeleteBook_WhenCalledWithInvalidArgument_ShouldThrowException()
-        {
-            // Act / Assert
-            Assert.Throws<ArgumentNullException>(() => _bookRepository.DeleteBook(null));
-        }
-
-        [Test, Isolated]
+        [Test]
         public void DeleteBook_WhenBookExists_ShouldDeleteBookFromDatabase()
         {
             // Arrange
@@ -110,16 +136,18 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Description = "Descriptive text"
             };
             _context.Books.Add(book);
+            _context.SaveChanges();
 
             // Act
-            _bookRepository.DeleteBook(book);
+            _bookRepository.DeleteBook(book.Id);
+            _unitOfWork.Complete();
 
             // Assert
             var result = _context.Books.ToList();
             Assert.That(result, Has.Count.EqualTo(0));
         }
 
-        [Test, Isolated]
+        [Test]
         public void DeleteBook_WhenBookNotInDatabase_ShouldThrowException()
         {
             // Arrange
@@ -131,10 +159,11 @@ namespace Library.IntegrationTests.Persistence.Repositories
             };
 
             // Act / Assert
-            Assert.Throws<DataNotFoundException>(() => _bookRepository.DeleteBook(book));
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.DeleteBook(book.Id));
         }
 
-        [Test, Isolated]
+        [Test]
         public void GetBookForAuthor_WhenBookExists_ShouldGetBookFromDatabase()
         {
             // Arrange
@@ -154,6 +183,7 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Genre = "Adventure"
             };
             _context.Authors.Add(author);
+            _unitOfWork.Complete();
 
             // Act
             var result = _bookRepository.GetBookForAuthor(author.Id, book.Id);
@@ -163,16 +193,18 @@ namespace Library.IntegrationTests.Persistence.Repositories
             Assert.IsInstanceOf<Book>(result);
         }
 
-        [Test, Isolated]
+        [Test]
+        public void GetBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
+        {
+            // Act / Assert
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.GetBookForAuthor(new Guid(), new Guid()));
+        }
+
+        [Test]
         public void GetBookForAuthor_WhenAuthorDoesNotHaveBookInDatabase_ShouldThrowException()
         {
             // Arrange
-            var book = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
             var author = new Author
             {
                 Id = new Guid(),
@@ -182,12 +214,15 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 LastName = "Smith",
                 Genre = "Adventure"
             };
+            _context.Authors.Add(author);
+            _context.SaveChanges();
 
             // Act / Assert
-            Assert.Throws<DataNotFoundException>(() => _bookRepository.GetBookForAuthor(author.Id, book.Id));
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.GetBookForAuthor(author.Id, new Guid()));
         }
 
-        [Test, Isolated]
+        [Test]
         public void GetBooksForAuthor_WhenAuthorsBooksExist_ShouldBeTakenFromDatabase()
         {
             // Arrange
@@ -213,6 +248,7 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Genre = "Adventure"
             };
             _context.Authors.Add(author);
+            _context.SaveChanges();
 
             // Act
             var result = _bookRepository.GetBooksForAuthor(author.Id);
@@ -221,20 +257,73 @@ namespace Library.IntegrationTests.Persistence.Repositories
             Assert.That(result, Has.Count.EqualTo(2));
         }
 
-        [Test, Isolated]
-        public void GetBooksForAuthor_WhenAuthorHasNoBooksInDatabase_ShouldThrowException()
+        [Test]
+        public void GetBooksForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Act / Assert
-            Assert.Throws<DataNotFoundException>(() => _bookRepository.GetBooksForAuthor(new Guid()));
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.GetBooksForAuthor(new Guid()));
         }
 
-        [Test, Isolated]
+        [Test]
+        public void GetBooksForAuthor_WhenAuthorHasNoBooksInDatabase_ShouldThrowException()
+        {
+            // Arrange
+            var author = new Author
+            {
+                Id = new Guid(),
+                Books = new List<Book>(),
+                DateOfBirth = new DateTimeOffset(),
+                FirstName = "John",
+                LastName = "Smith",
+                Genre = "Adventure"
+            };
+            _context.Authors.Add(author);
+            _context.SaveChanges();
+
+            // Act / Assert
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.GetBooksForAuthor(author.Id));
+        }
+
+        [Test]
         public void UpdateBookForAuthor_WhenCalledWithInvalidArgument_ShouldThrowException()
         {
             // Act / Assert
-            Assert.Throws<ArgumentNullException>(() => _bookRepository.UpdateBookForAuthor(new Guid(), null));
+            Assert.Throws<ArgumentNullException>(
+                () => _bookRepository.UpdateBookForAuthor(new Guid(), null));
         }
 
+        [Test]
+        public void UpdateBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
+        {
+            // Act / Assert
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.UpdateBookForAuthor(new Guid(), new Book()));
+        }
+
+        [Test]
+        public void UpdateBookForAuthor_WhenBookDoesNotExist_ShouldThrowException()
+        {
+            // Arrange
+            var author = new Author
+            {
+                Id = new Guid(),
+                Books = new List<Book>(),
+                DateOfBirth = new DateTimeOffset(),
+                FirstName = "John",
+                LastName = "Smith",
+                Genre = "Adventure"
+            };
+            _context.Authors.Add(author);
+            _context.SaveChanges();
+
+            // Act / Assert
+            Assert.Throws<DataNotFoundException>(
+                () => _bookRepository.UpdateBookForAuthor(author.Id, new Book()));
+        }
+
+        [Test]
         public void UpdateBookForAuthor_WhenCalled_ShouldUpdateBookForAuthorInDatabase()
         {
             // Arrange
@@ -260,13 +349,18 @@ namespace Library.IntegrationTests.Persistence.Repositories
             book.Title = newTitle;
             book.Description = newDescription;
 
+            _context.SaveChanges();
+
             // Act
             _bookRepository.UpdateBookForAuthor(author.Id, book);
+            _unitOfWork.Complete();
 
             // Assert
             Assert.AreEqual(newTitle, author.Books.First().Title);
             Assert.AreEqual(newDescription, author.Books.First().Description);
         }
+
+        [Test]
         public void UpdateBookForAuthor_WhenCalled_ShouldDisallowIdChanges()
         {
             // Arrange
@@ -275,6 +369,12 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Id = new Guid(),
                 Title = "Test Book",
                 Description = "Descriptive text"
+            };
+            var bookWithNewId = new Book
+            {
+                Id = Guid.NewGuid(),
+                Title = book.Title,
+                Description = book.Description
             };
             var author = new Author
             {
@@ -286,11 +386,11 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Genre = "Adventure"
             };
             _context.Authors.Add(author);
-
-            book.Id = new Guid();
+            _context.SaveChanges();
 
             // Act / Assert
-            Assert.Throws<DataCannotChangeIdException>(() => _bookRepository.UpdateBookForAuthor(author.Id, book));
+            Assert.Throws<DataCannotChangeIdException>(
+                () => _bookRepository.UpdateBookForAuthor(author.Id, bookWithNewId));
         }
     }
 }

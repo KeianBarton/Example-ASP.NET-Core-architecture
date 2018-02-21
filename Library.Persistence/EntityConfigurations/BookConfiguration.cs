@@ -18,8 +18,8 @@ namespace Library.Persistence.EntityConfigurations
                 .HasMaxLength(500);
 
             builder.HasOne(b => b.Author)
-                .WithMany()
-                .HasForeignKey("AuthorId");
+                .WithMany(a => a.Books)
+                .HasForeignKey(b => b.AuthorId);
         }
     }
 }

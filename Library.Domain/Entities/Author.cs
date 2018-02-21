@@ -17,5 +17,15 @@ namespace Library.Domain.Entities
 
         public ICollection<Book> Books { get; set; }
             = new List<Book>();
+
+        public void Modify(string firstName, string lastName,
+            DateTimeOffset dateOfBirth, string genre, ICollection<Book> books)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            DateOfBirth = dateOfBirth;
+            Genre = genre;
+            Books = books;
+        }
     }
 }

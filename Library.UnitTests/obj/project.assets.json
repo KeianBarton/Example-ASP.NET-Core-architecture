@@ -5646,11 +5646,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.UnitTests\\Library.UnitTests.csproj",
+      "projectUniqueName": "C:\\Projects\\Example ASP.NET Core architecture\\Library.UnitTests\\Library.UnitTests.csproj",
       "projectName": "Library.UnitTests",
-      "projectPath": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.UnitTests\\Library.UnitTests.csproj",
+      "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.UnitTests\\Library.UnitTests.csproj",
       "packagesPath": "C:\\Users\\Keian.Barton\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.UnitTests\\obj\\",
+      "outputPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.UnitTests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",

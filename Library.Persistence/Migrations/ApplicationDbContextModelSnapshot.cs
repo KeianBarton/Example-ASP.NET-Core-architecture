@@ -51,8 +51,6 @@ namespace Library.Persistence.Migrations
 
                     b.Property<Guid>("AuthorId");
 
-                    b.Property<Guid?>("AuthorId1");
-
                     b.Property<string>("Description")
                         .HasMaxLength(500);
 
@@ -64,21 +62,15 @@ namespace Library.Persistence.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("AuthorId1");
-
                     b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Library.Domain.Entities.Book", b =>
                 {
                     b.HasOne("Library.Domain.Entities.Author", "Author")
-                        .WithMany()
+                        .WithMany("Books")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Library.Domain.Entities.Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId1");
                 });
 #pragma warning restore 612, 618
         }

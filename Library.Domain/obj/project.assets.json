@@ -12545,11 +12545,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.Domain\\Library.Domain.csproj",
+      "projectUniqueName": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Domain\\Library.Domain.csproj",
       "projectName": "Library.Domain",
-      "projectPath": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.Domain\\Library.Domain.csproj",
+      "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Domain\\Library.Domain.csproj",
       "packagesPath": "C:\\Users\\Keian.Barton\\.nuget\\packages\\",
-      "outputPath": "C:\\Projects\\RESTful API ASP .NET Core Example\\Library.Domain\\obj\\",
+      "outputPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Domain\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",

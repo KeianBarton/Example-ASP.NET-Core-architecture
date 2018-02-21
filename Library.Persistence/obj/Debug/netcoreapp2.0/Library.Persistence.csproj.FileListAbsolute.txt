@@ -11,3 +11,16 @@ C:\Projects\RESTful API ASP .NET Core Example\Library.Persistence\obj\Debug\netc
 C:\Projects\RESTful API ASP .NET Core Example\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.AssemblyInfo.cs
 C:\Projects\RESTful API ASP .NET Core Example\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.dll
 C:\Projects\RESTful API ASP .NET Core Example\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\bin\Debug\netcoreapp2.0\Library.Persistence.deps.json
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\bin\Debug\netcoreapp2.0\Library.Persistence.runtimeconfig.json
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\bin\Debug\netcoreapp2.0\Library.Persistence.runtimeconfig.dev.json
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\bin\Debug\netcoreapp2.0\Library.Persistence.dll
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\bin\Debug\netcoreapp2.0\Library.Persistence.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\bin\Debug\netcoreapp2.0\Library.Domain.dll
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\bin\Debug\netcoreapp2.0\Library.Domain.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.csprojResolveAssemblyReference.cache
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.csproj.CoreCompileInputs.cache
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.AssemblyInfoInputs.cache
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.AssemblyInfo.cs
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.dll
+C:\Projects\Example ASP.NET Core architecture\Library.Persistence\obj\Debug\netcoreapp2.0\Library.Persistence.pdb

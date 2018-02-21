@@ -13,5 +13,11 @@ namespace Library.Domain.Entities
         public Author Author { get; set; }
 
         public Guid AuthorId { get; set; }
+
+        public void Modify(string title, string description)
+        {
+            Title = title;
+            Description = description;
+        }
     }
 }

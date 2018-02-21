@@ -10,6 +10,6 @@ namespace Library.Domain.Persistence.Repositories
         Book GetBookForAuthor(Guid authorId, Guid bookId);
         void AddBookForAuthor(Guid authorId, Book book);
         void UpdateBookForAuthor(Guid authorId, Book book);
-        void DeleteBook(Book book);
+        void DeleteBook(Guid bookId);
     }
 }

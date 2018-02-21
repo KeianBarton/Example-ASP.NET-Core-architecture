@@ -1,10 +1,8 @@
 ﻿using Library.Persistence.Seeding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Library.Persistence
 {
@@ -20,9 +18,6 @@ namespace Library.Persistence
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddEntityFrameworkSqlServer();
-            services.AddDbContext<ApplicationDbContext>(opt => opt.UseSqlServer(connectionString));
             services.AddMvc();
         }
 
@@ -41,7 +36,6 @@ namespace Library.Persistence
             }
 
             app.UseStaticFiles();
-
 
             // Seeding demo data
             applicationDbContext.EnsureSeedDataForContext();
