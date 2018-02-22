@@ -12565,9 +12565,9 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.Persistence.csproj",
-      "projectName": "Library.Persistence",
-      "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.Persistence.csproj",
+      "projectUniqueName": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.EntityFramework.csproj",
+      "projectName": "Library.EntityFramework",
+      "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.EntityFramework.csproj",
       "packagesPath": "C:\\Users\\Keian.Barton\\.nuget\\packages\\",
       "outputPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\obj\\",
       "projectStyle": "PackageReference",

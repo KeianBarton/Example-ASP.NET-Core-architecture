@@ -135,7 +135,17 @@ namespace Library.IntegrationTests.Persistence.Repositories
                 Title = "Test Book",
                 Description = "Descriptive text"
             };
-            _context.Books.Add(book);
+            var author = new Author
+            {
+                Id = new Guid(),
+                Books = new List<Book>() { book },
+                DateOfBirth = new DateTimeOffset(),
+                FirstName = "John",
+                LastName = "Smith",
+                Genre = "Adventure"
+            };
+            var numberOfBooksBeforeChanges = _context.Books.Count();
+            _context.Authors.Add(author);
             _context.SaveChanges();
 
             // Act
@@ -144,7 +154,7 @@ namespace Library.IntegrationTests.Persistence.Repositories
 
             // Assert
             var result = _context.Books.ToList();
-            Assert.That(result, Has.Count.EqualTo(0));
+            Assert.That(result, Has.Count.EqualTo(numberOfBooksBeforeChanges));
         }
 
         [Test]
