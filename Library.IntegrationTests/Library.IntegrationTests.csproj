@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Library.Persistence\Library.Persistence.csproj" />
+    <ProjectReference Include="..\Library.EntityFramework\Library.EntityFramework.csproj" />
+    <ProjectReference Include="..\Library.Services\Library.Services.csproj" />
   </ItemGroup>
 
 </Project>

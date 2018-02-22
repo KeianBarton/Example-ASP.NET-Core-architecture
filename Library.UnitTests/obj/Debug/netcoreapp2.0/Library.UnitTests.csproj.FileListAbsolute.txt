@@ -20,9 +20,15 @@ C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcor
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.UnitTests.runtimeconfig.dev.json
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.UnitTests.dll
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.UnitTests.pdb
-C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\obj\Debug\netcoreapp2.0\Library.UnitTests.csprojResolveAssemblyReference.cache
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\obj\Debug\netcoreapp2.0\Library.UnitTests.csproj.CoreCompileInputs.cache
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\obj\Debug\netcoreapp2.0\Library.UnitTests.AssemblyInfoInputs.cache
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\obj\Debug\netcoreapp2.0\Library.UnitTests.AssemblyInfo.cs
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\obj\Debug\netcoreapp2.0\Library.UnitTests.dll
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\obj\Debug\netcoreapp2.0\Library.UnitTests.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\obj\Debug\netcoreapp2.0\Library.UnitTests.csprojResolveAssemblyReference.cache
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.Domain.dll
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.EntityFramework.dll
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.Services.dll
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.Services.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.Domain.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.EntityFramework.pdb

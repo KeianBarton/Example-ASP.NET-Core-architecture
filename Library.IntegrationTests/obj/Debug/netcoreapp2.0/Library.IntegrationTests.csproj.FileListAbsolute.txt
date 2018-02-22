@@ -25,8 +25,6 @@ C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.IntegrationTests.dll
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.IntegrationTests.pdb
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.Domain.dll
-C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.Persistence.dll
-C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.Persistence.pdb
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.Domain.pdb
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.csprojResolveAssemblyReference.cache
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.csproj.CoreCompileInputs.cache
@@ -34,3 +32,7 @@ C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\obj\Debug
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.AssemblyInfo.cs
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.dll
 C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\obj\Debug\netcoreapp2.0\Library.IntegrationTests.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.EntityFramework.dll
+C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.EntityFramework.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.Services.dll
+C:\Projects\Example ASP.NET Core architecture\Library.IntegrationTests\bin\Debug\netcoreapp2.0\Library.Services.pdb

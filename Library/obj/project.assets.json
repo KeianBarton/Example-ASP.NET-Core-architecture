@@ -5028,6 +5028,50 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "Library.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.All": "2.0.5",
+          "Microsoft.NETCore.App": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Library.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Library.Domain.dll": {}
+        }
+      },
+      "Library.EntityFramework/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Library.Domain": "1.0.0",
+          "Microsoft.AspNetCore.All": "2.0.5",
+          "Microsoft.NETCore.App": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Library.EntityFramework.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Library.EntityFramework.dll": {}
+        }
+      },
+      "Library.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Library.EntityFramework": "1.0.0",
+          "Microsoft.AspNetCore.All": "2.0.5",
+          "Microsoft.NETCore.App": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Library.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Library.Services.dll": {}
+        }
       }
     }
   },
@@ -13113,10 +13157,26 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
+    },
+    "Library.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Library.Domain/Library.Domain.csproj",
+      "msbuildProject": "../Library.Domain/Library.Domain.csproj"
+    },
+    "Library.EntityFramework/1.0.0": {
+      "type": "project",
+      "path": "../Library.EntityFramework/Library.EntityFramework.csproj",
+      "msbuildProject": "../Library.EntityFramework/Library.EntityFramework.csproj"
+    },
+    "Library.Services/1.0.0": {
+      "type": "project",
+      "path": "../Library.Services/Library.Services.csproj",
+      "msbuildProject": "../Library.Services/Library.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Library.Services >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.5",
       "Microsoft.NETCore.App >= 2.0.0",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 2.0.2"
@@ -13157,7 +13217,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Projects\\Example ASP.NET Core architecture\\Library.Services\\Library.Services.csproj": {
+              "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Services\\Library.Services.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v2.0": {
       "Library.IntegrationTests/1.0.0": {
         "dependencies": {
-          "Library.Persistence": "1.0.0",
+          "Library.EntityFramework": "1.0.0",
+          "Library.Services": "1.0.0",
           "Microsoft.NET.Test.Sdk": "15.5.0",
           "NUnit": "3.9.0",
           "NUnit3TestAdapter": "3.9.0"
@@ -3590,13 +3591,22 @@
           "Library.Domain.dll": {}
         }
       },
-      "Library.Persistence/1.0.0": {
+      "Library.EntityFramework/1.0.0": {
         "dependencies": {
           "Library.Domain": "1.0.0",
           "Microsoft.AspNetCore.All": "2.0.5"
         },
         "runtime": {
-          "Library.Persistence.dll": {}
+          "Library.EntityFramework.dll": {}
+        }
+      },
+      "Library.Services/1.0.0": {
+        "dependencies": {
+          "Library.EntityFramework": "1.0.0",
+          "Microsoft.AspNetCore.All": "2.0.5"
+        },
+        "runtime": {
+          "Library.Services.dll": {}
         }
       }
     }
@@ -5705,7 +5715,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Library.Persistence/1.0.0": {
+    "Library.EntityFramework/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Library.Services/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

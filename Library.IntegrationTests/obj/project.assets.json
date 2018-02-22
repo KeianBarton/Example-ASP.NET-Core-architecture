@@ -5218,7 +5218,7 @@
           "bin/placeholder/Library.Domain.dll": {}
         }
       },
-      "Library.Persistence/1.0.0": {
+      "Library.EntityFramework/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
         "dependencies": {
@@ -5227,10 +5227,25 @@
           "Microsoft.NETCore.App": "2.0.0"
         },
         "compile": {
-          "bin/placeholder/Library.Persistence.dll": {}
+          "bin/placeholder/Library.EntityFramework.dll": {}
         },
         "runtime": {
-          "bin/placeholder/Library.Persistence.dll": {}
+          "bin/placeholder/Library.EntityFramework.dll": {}
+        }
+      },
+      "Library.Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "Library.EntityFramework": "1.0.0",
+          "Microsoft.AspNetCore.All": "2.0.5",
+          "Microsoft.NETCore.App": "2.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Library.Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Library.Services.dll": {}
         }
       }
     }
@@ -13586,15 +13601,21 @@
       "path": "../Library.Domain/Library.Domain.csproj",
       "msbuildProject": "../Library.Domain/Library.Domain.csproj"
     },
-    "Library.Persistence/1.0.0": {
+    "Library.EntityFramework/1.0.0": {
       "type": "project",
-      "path": "../Library.Persistence/Library.Persistence.csproj",
-      "msbuildProject": "../Library.Persistence/Library.Persistence.csproj"
+      "path": "../Library.EntityFramework/Library.EntityFramework.csproj",
+      "msbuildProject": "../Library.EntityFramework/Library.EntityFramework.csproj"
+    },
+    "Library.Services/1.0.0": {
+      "type": "project",
+      "path": "../Library.Services/Library.Services.csproj",
+      "msbuildProject": "../Library.Services/Library.Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
-      "Library.Persistence >= 1.0.0",
+      "Library.EntityFramework >= 1.0.0",
+      "Library.Services >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 15.5.0",
       "Microsoft.NETCore.App >= 2.0.0",
       "NUnit >= 3.9.0",
@@ -13637,8 +13658,11 @@
       "frameworks": {
         "netcoreapp2.0": {
           "projectReferences": {
-            "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.Persistence.csproj": {
-              "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Persistence\\Library.Persistence.csproj"
+            "C:\\Projects\\Example ASP.NET Core architecture\\Library.EntityFramework\\Library.EntityFramework.csproj": {
+              "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.EntityFramework\\Library.EntityFramework.csproj"
+            },
+            "C:\\Projects\\Example ASP.NET Core architecture\\Library.Services\\Library.Services.csproj": {
+              "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Services\\Library.Services.csproj"
             }
           }
         }

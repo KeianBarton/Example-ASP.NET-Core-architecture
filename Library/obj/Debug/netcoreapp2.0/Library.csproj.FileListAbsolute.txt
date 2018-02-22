@@ -9,3 +9,9 @@ C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Li
 C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Library.pdb
 C:\Projects\Example ASP.NET Core architecture\Library\obj\Debug\netcoreapp2.0\Library.dll
 C:\Projects\Example ASP.NET Core architecture\Library\obj\Debug\netcoreapp2.0\Library.pdb
+C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Library.Domain.dll
+C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Library.EntityFramework.dll
+C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Library.Services.dll
+C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Library.Services.pdb
+C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Library.Domain.pdb
+C:\Projects\Example ASP.NET Core architecture\Library\bin\Debug\netcoreapp2.0\Library.EntityFramework.pdb
