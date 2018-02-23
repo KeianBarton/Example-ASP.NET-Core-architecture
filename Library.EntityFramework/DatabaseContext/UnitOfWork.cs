@@ -1,4 +1,5 @@
-﻿using Library.EntityFramework.Repositories;
+﻿using Library.Domain.Entities;
+using Library.EntityFramework.Repositories;
 
 namespace Library.EntityFramework.DatabaseContext
 {
@@ -6,8 +7,8 @@ namespace Library.EntityFramework.DatabaseContext
     {
         private readonly ApplicationDbContext _context;
 
-        public IAuthorRepository Authors { get; private set; }
-        public IBookRepository Books { get; private set; }
+        public IRepository<Author> Authors { get; private set; }
+        public IRepository<Book> Books { get; private set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {

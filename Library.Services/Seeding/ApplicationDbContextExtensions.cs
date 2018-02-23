@@ -9,7 +9,7 @@ namespace Library.EntityFramework.Seeding
     {
         public static void EnsureSeedDataForContext(this ApplicationDbContext context)
         {
-            // first, clear the database.  This ensures we can always start 
+            // first, clear the database.  This ensures we can always start
             // fresh with each demo.  Not advised for production environments, obviously :-)
             context.Authors.RemoveRange(context.Authors);
             context.SaveChanges();

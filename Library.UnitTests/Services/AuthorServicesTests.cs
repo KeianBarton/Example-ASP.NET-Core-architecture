@@ -210,14 +210,6 @@ namespace Library.UnitTests.Services
         }
 
         [Test]
-        public void GetAuthors_WhenCalledWithInvalidArgument_ShouldThrowException()
-        {
-            // Act / Assert
-            Assert.Throws<ArgumentNullException>(
-                () => _authorService.GetAuthors(null));
-        }
-
-        [Test]
         public void GetAuthors_WhenAuthorsExist_ShouldBeTakenFromDatabase()
         {
             // Arrange
@@ -251,38 +243,6 @@ namespace Library.UnitTests.Services
         }
 
         [Test]
-        public void GetAuthors_WhenAuthorExistsAndSelectingId_ShouldBeTakenFromDatabase()
-        {
-            // Arrange
-            var author1 = new Author
-            {
-                Id = Guid.NewGuid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
-            var author2 = new Author
-            {
-                Id = Guid.NewGuid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "Jacob",
-                LastName = "Smith",
-                Genre = "Horror"
-            };
-            var authors = new List<Author>() { author1, author2 };
-            _unitOfWork.Setup(u => u.Authors.ReadAll()).Returns(authors);
-
-            // Act
-            var result = _authorService.GetAuthors(new List<Guid>() { author1.Id });
-
-            // Assert
-            Assert.That(result, Has.Count.EqualTo(1));
-        }
-
-        [Test]
         public void GetAuthors_WhenAuthorNotInDatabase_ShouldThrowException()
         {
             // Arrange
@@ -298,7 +258,7 @@ namespace Library.UnitTests.Services
         {
             // Act / Assert
             Assert.Throws<ArgumentNullException>(
-                () => _authorService.UpdateAuthor(null));
+                () => _authorService.UpdateAuthor(new Guid(), null));
         }
 
         [Test]
@@ -331,7 +291,7 @@ namespace Library.UnitTests.Services
             author.Genre = genre;
 
             // Act
-            _authorService.UpdateAuthor(author);
+            _authorService.UpdateAuthor(author.Id, author);
 
             // Assert
             Assert.AreEqual(books, author.Books);
@@ -358,7 +318,7 @@ namespace Library.UnitTests.Services
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
-                () => _authorService.UpdateAuthor(author));
+                () => _authorService.UpdateAuthor(new Guid(), author));
         }
     }
 }

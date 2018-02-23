@@ -22,7 +22,7 @@ namespace Library.Services
                 throw new ArgumentNullException();
 
             if (AuthorExists(author.Id))
-                throw new DataAlreadyExistsException();
+                throw new DataAlreadyExistsException("Author already exists");
 
             _unitOfWork.Authors.Create(author);
             _unitOfWork.Complete();
@@ -36,7 +36,7 @@ namespace Library.Services
         public void DeleteAuthor(Guid authorId)
         {
             if (!AuthorExists(authorId))
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Author not found");
 
             _unitOfWork.Authors.Delete(authorId);
             _unitOfWork.Complete();
@@ -47,7 +47,7 @@ namespace Library.Services
             var author = _unitOfWork.Authors.Read(authorId);
 
             if (author == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Author not found");
 
             return author;
         }
@@ -62,30 +62,18 @@ namespace Library.Services
             return authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
         }
 
-        public IEnumerable<Author> GetAuthors(IEnumerable<Guid> authorIds)
-        {
-            if (authorIds == null)
-                throw new ArgumentNullException();
-
-            return _unitOfWork.Authors.ReadAll()
-                .Where(a => authorIds.Contains(a.Id))
-                .OrderBy(a => a.FirstName)
-                .OrderBy(a => a.LastName)
-                .ToList();
-        }
-
-        public void UpdateAuthor(Author author)
+        public void UpdateAuthor(Guid id, Author author)
         {
             if (author == null)
                 throw new ArgumentNullException();
 
-            var authorDb = _unitOfWork.Authors.Read(author.Id);
+            var authorDb = _unitOfWork.Authors.Read(id);
 
             if (authorDb == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Author not found");
 
-            authorDb.Modify(author.FirstName, author.LastName,
-                author.DateOfBirth, author.Genre, author.Books);
+            authorDb.Modify(
+                author.FirstName, author.LastName, author.DateOfBirth, author.Genre);
             _unitOfWork.Complete();
         }
     }

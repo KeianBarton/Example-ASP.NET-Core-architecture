@@ -14,10 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\REST\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Library.Services\Library.Services.csproj" />
   </ItemGroup>
 

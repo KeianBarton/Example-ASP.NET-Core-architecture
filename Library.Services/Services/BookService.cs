@@ -23,14 +23,12 @@ namespace Library.Services
 
             var author = _unitOfWork.Authors.Read(authorId);
             if (author == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Author not found");
 
             if (author.Books.Any(b => b.Title == book.Title))
-                throw new DataAlreadyExistsException();
+                throw new DataAlreadyExistsException("Book already exists");
 
             author.Books.Add(book);
-            author.Modify(author.FirstName, author.LastName, author.DateOfBirth,
-                author.Genre, author.Books);
             _unitOfWork.Complete();
         }
 
@@ -42,7 +40,7 @@ namespace Library.Services
         public void DeleteBook(Guid bookId)
         {
             if (!BookExists(bookId))
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Book not found");
 
             _unitOfWork.Books.Delete(bookId);
             _unitOfWork.Complete();
@@ -53,11 +51,11 @@ namespace Library.Services
             var author = _unitOfWork.Authors.Read(authorId);
 
             if (author == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Author not found");
 
             var book = author.Books.SingleOrDefault(b => b.Id == bookId);
             if (book == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Book not found");
 
             return book;
         }
@@ -67,10 +65,10 @@ namespace Library.Services
             var author = _unitOfWork.Authors.Read(authorId);
 
             if (author == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Author not found");
 
             if (!author.Books.Any())
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("No books found");
 
             return author.Books;
         }
@@ -83,11 +81,11 @@ namespace Library.Services
             var author = _unitOfWork.Authors.Read(authorId);
 
             if (author == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Author not found");
 
             var bookDb = author.Books.SingleOrDefault(b => b.Id == book.Id);
             if (bookDb == null)
-                throw new DataNotFoundException();
+                throw new DataNotFoundException("Book not found");
 
             bookDb.Modify(book.Title, book.Description);
             _unitOfWork.Complete();

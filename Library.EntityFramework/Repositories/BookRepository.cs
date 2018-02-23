@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Library.EntityFramework.Repositories
 {
-    public class BookRepository : IBookRepository
+    public class BookRepository : IRepository<Book>
     {
         private readonly IApplicationDbContext _context;
 

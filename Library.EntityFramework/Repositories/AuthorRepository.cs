@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Library.EntityFramework.Repositories
 {
-    public class AuthorRepository : IAuthorRepository
+    public class AuthorRepository : IRepository<Author>
     {
         private readonly IApplicationDbContext _context;
 

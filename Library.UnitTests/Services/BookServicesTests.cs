@@ -38,7 +38,6 @@ namespace Library.UnitTests.Services
                 () => _bookService.AddBookForAuthor(new Guid(), null));
         }
 
-        [Ignore("TODO")]
         [Test]
         public void AddBookForAuthor_WhenValidRequest_ShouldCallRepositoryCreate()
         {
@@ -64,7 +63,7 @@ namespace Library.UnitTests.Services
             _bookService.AddBookForAuthor(author.Id, book);
 
             // Assert
-            
+            Assert.That(author.Books, Has.Count.EqualTo(1));
         }
 
         [Test]
@@ -85,7 +84,6 @@ namespace Library.UnitTests.Services
             Assert.Throws<DataNotFoundException>(
                 () => _bookService.AddBookForAuthor(new Guid(), new Book()));
         }
-
 
         [Test]
         public void AddBookForAuthor_WhenAuthorAlreadyHasBook_ShouldThrowException()
@@ -113,7 +111,6 @@ namespace Library.UnitTests.Services
                 () => _bookService.AddBookForAuthor(author.Id, book));
         }
 
-        [Ignore("TODO")]
         [Test]
         public void DeleteBook_WhenBookExists_ShouldDeleteBookFromDatabase()
         {
@@ -133,7 +130,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWork.Setup(u => u.Books.Read(It.IsAny<Guid>())).Returns(book);
             _unitOfWork.Setup(u => u.Books.Delete(It.IsAny<Guid>())).Verifiable();
 
             // Act

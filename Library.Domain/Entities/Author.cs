@@ -19,13 +19,12 @@ namespace Library.Domain.Entities
             = new List<Book>();
 
         public void Modify(string firstName, string lastName,
-            DateTimeOffset dateOfBirth, string genre, ICollection<Book> books)
+            DateTimeOffset dateOfBirth, string genre)
         {
             FirstName = firstName;
             LastName = lastName;
             DateOfBirth = dateOfBirth;
             Genre = genre;
-            Books = books;
         }
     }
 }

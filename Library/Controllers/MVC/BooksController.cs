@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Library.Controllers.Web
+namespace Library.Controllers.MVC
 {
-    public class AuthorsController : Controller
+    public class BooksController : Controller
     {
         public IActionResult Index()
         {

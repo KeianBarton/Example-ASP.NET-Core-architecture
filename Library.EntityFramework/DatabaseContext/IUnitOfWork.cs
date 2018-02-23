@@ -1,11 +1,13 @@
-﻿using Library.EntityFramework.Repositories;
+﻿using Library.Domain.Entities;
+using Library.EntityFramework.Repositories;
 
 namespace Library.EntityFramework.DatabaseContext
 {
     public interface IUnitOfWork
     {
-        IAuthorRepository Authors { get; }
-        IBookRepository Books { get; }
+        IRepository<Author> Authors { get; }
+
+        IRepository<Book> Books { get; }
 
         void Complete();
     }
