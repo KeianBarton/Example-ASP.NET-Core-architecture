@@ -1,5 +1,4 @@
 ﻿using Library.EntityFramework.DatabaseContext;
-using Library.EntityFramework.Seeding;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,12 +18,12 @@ namespace Library.Services
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,
-            ApplicationDbContext applicationDbContext)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -37,9 +36,6 @@ namespace Library.Services
             }
 
             app.UseStaticFiles();
-
-            // Seeding demo data
-            applicationDbContext.EnsureSeedDataForContext();
 
             app.UseMvc();
         }

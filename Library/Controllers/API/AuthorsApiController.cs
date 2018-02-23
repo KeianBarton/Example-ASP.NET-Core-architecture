@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace Library.Controllers.API
 {
-    [Produces("application/json")]
     [Route("api/authors")]
+    [Produces("application/json")]
     public class AuthorsApiController : Controller
     {
         private readonly IAuthorService _authorService;
@@ -60,24 +60,8 @@ namespace Library.Controllers.API
             }
         }
 
-        // GET: api/authors/x
-        [HttpGet("{authorId}", Name = "AuthorExists")]
-        public async Task<IActionResult> AuthorExists(Guid authorId)
-        {
-            try
-            {
-                var authorExists = await Task.Run(
-                    () => _authorService.AuthorExists(authorId));
-                return Ok(authorExists);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message.ToString());
-            }
-        }
-
         // POST: api/authors
-        [HttpPost]
+        [HttpPost("{authorId}")]
         public async Task<IActionResult> AddAuthor(AuthorDto authorDto)
         {
             try

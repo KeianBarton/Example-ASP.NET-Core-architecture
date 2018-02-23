@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Library.Controllers.API
 {
+    [Route("api/books")]
     [Produces("application/json")]
     public class BooksApiController : Controller
     {
@@ -18,9 +19,8 @@ namespace Library.Controllers.API
             _bookService = bookService;
         }
 
-        // POST: api/books/for-author/x
+        // POST: api/books/x
         [HttpPost("{authorId}", Name = "AddBookForAuthor")]
-        [Route("api/books/for-author")]
         public async Task<IActionResult> AddBookForAuthor(Guid authorId, BookDto bookDto)
         {
             try
@@ -52,26 +52,8 @@ namespace Library.Controllers.API
             }
         }
 
-        // GET: api/books/x
-        [HttpGet("{bookId}", Name = "BookExists")]
-        [Route("api/books")]
-        public async Task<IActionResult> BookExists(Guid bookId)
-        {
-            try
-            {
-                var bookExists = await Task.Run(
-                    () => _bookService.BookExists(bookId));
-                return Ok(bookExists);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message.ToString());
-            }
-        }
-
         // DELETE: api/books/x
-        [HttpDelete("{bookId}")]
-        [Route("api/books")]
+        [HttpDelete("{bookId}", Name = "DeleteBook")]
         public async Task<IActionResult> DeleteBook(Guid bookId)
         {
             try
@@ -90,9 +72,10 @@ namespace Library.Controllers.API
             }
         }
 
-        // GET: api/books/x
-        [HttpGet("{authorId}", Name = "GetBookForAuthor")]
-        [Route("api/books")]
+        // GET: api/books/x/authors/y
+        [HttpGet(Name = "GetBookForAuthor")]
+        [Route("")]
+        [Route("{bookId}/authors/{authorId}")]
         public async Task<IActionResult> GetBookForAuthor(Guid authorId, Guid bookId)
         {
             try
@@ -111,9 +94,10 @@ namespace Library.Controllers.API
             }
         }
 
-        // GET: api/books/for-author/x
-        [HttpGet("{authorId}", Name = "GetBooksForAuthor")]
-        [Route("api/books/for-author")]
+        // GET: api/books/authors/x
+        [HttpGet(Name = "GetBooksForAuthor")]
+        [Route("")]
+        [Route("authors/{authorId}")]
         public async Task<IActionResult> GetBooksForAuthor(Guid authorId)
         {
             try
@@ -132,9 +116,10 @@ namespace Library.Controllers.API
             }
         }
 
-        // PUT: api/books/for-author/x
+        // PUT: api/books/authors/x
         [HttpPut("{authorId}", Name = "UpdateBookForAuthor")]
-        [Route("api/books/for-author")]
+        [Route("")]
+        [Route("authors")]
         public async Task<IActionResult> UpdateBookForAuthor(Guid authorId, BookDto bookDto)
         {
             try
