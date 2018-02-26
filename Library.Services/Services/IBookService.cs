@@ -6,7 +6,7 @@ namespace Library.Services
 {
     public interface IBookService
     {
-        void AddBookForAuthor(Guid authorId, Book book);
+        Guid AddBookForAuthor(Guid authorId, Book book);
 
         bool BookExists(Guid bookId);
 

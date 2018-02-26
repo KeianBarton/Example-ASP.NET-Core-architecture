@@ -6,7 +6,7 @@ namespace Library.Services
 {
     public interface IAuthorService
     {
-        void AddAuthor(Author author);
+        Guid AddAuthor(Author author);
 
         bool AuthorExists(Guid authorId);
 

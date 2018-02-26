@@ -4,6 +4,7 @@ using Library.EntityFramework.Exceptions;
 using Library.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Library.Controllers.API
@@ -30,21 +31,20 @@ namespace Library.Controllers.API
                     Title = bookDto.Title,
                     Description = bookDto.Description
                 };
-                await Task.Run(
+                var result = await Task.Run(
                     () => _bookService.AddBookForAuthor(authorId, book));
-                return Ok();
-            }
-            catch (ArgumentNullException e)
-            {
-                return BadRequest(e.Message.ToString());
+
+                // TODO
+                var url = Url.Link("GetBookForAuthor", new { bookId = result, authorId });
+                return Created(url, book);
             }
             catch (DataNotFoundException e)
             {
                 return NotFound(e.Message.ToString());
             }
-            catch (DataAlreadyExistsException e)
+            catch (DataAlreadyExistsException)
             {
-                return BadRequest(e.Message.ToString());
+                return StatusCode((int)HttpStatusCode.Conflict);
             }
             catch (Exception e)
             {
@@ -74,7 +74,6 @@ namespace Library.Controllers.API
 
         // GET: api/books/x/authors/y
         [HttpGet(Name = "GetBookForAuthor")]
-        [Route("")]
         [Route("{bookId}/authors/{authorId}")]
         public async Task<IActionResult> GetBookForAuthor(Guid authorId, Guid bookId)
         {

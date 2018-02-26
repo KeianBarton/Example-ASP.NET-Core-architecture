@@ -5,12 +5,12 @@ namespace Library.EntityFramework.DatabaseContext
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
         public IRepository<Author> Authors { get; private set; }
         public IRepository<Book> Books { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(IApplicationDbContext context)
         {
             _context = context;
             Authors = new AuthorRepository(context);

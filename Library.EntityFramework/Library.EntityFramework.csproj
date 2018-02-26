@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180226113915_InitialMigration.cs" />
+    <Compile Remove="Migrations\20180226113915_InitialMigration.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Page.xaml" />
   </ItemGroup>
 

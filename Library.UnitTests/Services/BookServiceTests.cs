@@ -11,22 +11,22 @@ using System.Linq;
 namespace Library.UnitTests.Services
 {
     [TestFixture]
-    public class BookServicesTests
+    public class BookServiceTests
     {
-        private Mock<IUnitOfWork> _unitOfWork;
+        private Mock<IUnitOfWork> _unitOfWorkMock;
         private BookService _bookService;
 
         [SetUp]
         public void SetUp()
         {
-            _unitOfWork = new Mock<IUnitOfWork>();
-            _bookService = new BookService(_unitOfWork.Object);
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _bookService = new BookService(_unitOfWorkMock.Object);
         }
 
         [TearDown]
         public void TearDown()
         {
-            _unitOfWork = null;
+            _unitOfWorkMock = null;
             _bookService = null;
         }
 
@@ -57,7 +57,7 @@ namespace Library.UnitTests.Services
                 Title = "Test Book",
                 Description = "Descriptive text"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act
             _bookService.AddBookForAuthor(author.Id, book);
@@ -78,7 +78,7 @@ namespace Library.UnitTests.Services
         public void AddBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Arrange
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -104,7 +104,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
             Assert.Throws<DataAlreadyExistsException>(
@@ -130,14 +130,14 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Books.Read(It.IsAny<Guid>())).Returns(book);
-            _unitOfWork.Setup(u => u.Books.Delete(It.IsAny<Guid>())).Verifiable();
+            _unitOfWorkMock.Setup(u => u.Books.Read(It.IsAny<Guid>())).Returns(book);
+            _unitOfWorkMock.Setup(u => u.Books.Delete(It.IsAny<Guid>())).Verifiable();
 
             // Act
             _bookService.DeleteBook(book.Id);
 
             // Assert
-            _unitOfWork.Verify(u => u.Books.Delete(book.Id));
+            _unitOfWorkMock.Verify(u => u.Books.Delete(book.Id));
         }
 
         [Test]
@@ -151,7 +151,7 @@ namespace Library.UnitTests.Services
                 Description = "Descriptive text"
             };
             // Arrange
-            _unitOfWork.Setup(u => u.Books.Read(It.IsAny<Guid>())).Returns((Book)null);
+            _unitOfWorkMock.Setup(u => u.Books.Read(It.IsAny<Guid>())).Returns((Book)null);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -177,7 +177,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act
             var result = _bookService.GetBookForAuthor(author.Id, book.Id);
@@ -191,7 +191,7 @@ namespace Library.UnitTests.Services
         public void GetBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Arrange
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -211,7 +211,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -243,7 +243,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act
             var result = _bookService.GetBooksForAuthor(author.Id);
@@ -256,7 +256,7 @@ namespace Library.UnitTests.Services
         public void GetBooksForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Arrange
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -276,7 +276,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -295,7 +295,7 @@ namespace Library.UnitTests.Services
         public void UpdateBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Arrange
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -315,7 +315,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
@@ -341,7 +341,7 @@ namespace Library.UnitTests.Services
                 LastName = "Smith",
                 Genre = "Adventure"
             };
-            _unitOfWork.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             var newTitle = "New test book";
             var newDescription = "New description";

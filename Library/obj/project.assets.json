@@ -5072,6 +5072,20 @@
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
       },
+      "Library.CompositionRoot/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "dependencies": {
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "3.2.0",
+          "Library.Services": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Library.CompositionRoot.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Library.CompositionRoot.dll": {}
+        }
+      },
       "Library.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v2.0",
@@ -13227,6 +13241,11 @@
         "windowsazure.storage.nuspec"
       ]
     },
+    "Library.CompositionRoot/1.0.0": {
+      "type": "project",
+      "path": "../Library.CompositionRoot/Library.CompositionRoot.csproj",
+      "msbuildProject": "../Library.CompositionRoot/Library.CompositionRoot.csproj"
+    },
     "Library.Domain/1.0.0": {
       "type": "project",
       "path": "../Library.Domain/Library.Domain.csproj",
@@ -13245,6 +13264,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Library.CompositionRoot >= 1.0.0",
       "Library.Domain >= 1.0.0",
       "Library.Services >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.5",
@@ -13293,6 +13313,9 @@
             },
             "C:\\Projects\\Example ASP.NET Core architecture\\Library.Domain\\Library.Domain.csproj": {
               "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.Domain\\Library.Domain.csproj"
+            },
+            "C:\\Projects\\Example ASP.NET Core architecture\\Library.CompositionRoot\\Library.CompositionRoot.csproj": {
+              "projectPath": "C:\\Projects\\Example ASP.NET Core architecture\\Library.CompositionRoot\\Library.CompositionRoot.csproj"
             }
           }
         }

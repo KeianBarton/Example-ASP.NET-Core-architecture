@@ -16,7 +16,7 @@ namespace Library.Services
             _unitOfWork = unitOfWork;
         }
 
-        public void AddAuthor(Author author)
+        public Guid AddAuthor(Author author)
         {
             if (author == null)
                 throw new ArgumentNullException();
@@ -26,6 +26,7 @@ namespace Library.Services
 
             _unitOfWork.Authors.Create(author);
             _unitOfWork.Complete();
+            return author.Id;
         }
 
         public bool AuthorExists(Guid authorId)

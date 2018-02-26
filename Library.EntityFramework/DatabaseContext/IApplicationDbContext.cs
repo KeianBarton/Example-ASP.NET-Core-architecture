@@ -7,5 +7,7 @@ namespace Library.EntityFramework.DatabaseContext
     {
         DbSet<Author> Authors { get; set; }
         DbSet<Book> Books { get; set; }
+
+        int SaveChanges();
     }
 }

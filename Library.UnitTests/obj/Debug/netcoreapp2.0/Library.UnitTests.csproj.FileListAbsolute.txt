@@ -32,3 +32,7 @@ C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcor
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.Services.pdb
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.Domain.pdb
 C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.EntityFramework.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.CompositionRoot.dll
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.dll
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.pdb
+C:\Projects\Example ASP.NET Core architecture\Library.UnitTests\bin\Debug\netcoreapp2.0\Library.CompositionRoot.pdb

@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Library.Services;
+﻿using Library.CompositionRoot;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -19,10 +18,8 @@ namespace Library
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper();
+            DependencyMapper.SetDependencies(services, Configuration);
             services.AddMvc();
-            services.AddTransient<IAuthorService, AuthorService>();
-            services.AddTransient<IBookService, BookService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

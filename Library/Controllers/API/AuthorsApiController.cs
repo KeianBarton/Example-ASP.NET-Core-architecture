@@ -3,8 +3,10 @@ using Library.Domain.Entities;
 using Library.EntityFramework.Exceptions;
 using Library.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Library.Controllers.API
@@ -74,17 +76,16 @@ namespace Library.Controllers.API
                     Genre = authorDto.Genre,
                     Books = new List<Book>()
                 };
-                await Task.Run(
+                var result = await Task.Run(
                     () => _authorService.AddAuthor(author));
-                return Ok();
+
+                // TODO
+                var url = Url.Link("GetAuthor", new { authorId = result });
+                return Created(url, author);
             }
-            catch (ArgumentNullException e)
+            catch (DataAlreadyExistsException)
             {
-                return BadRequest(e.Message.ToString());
-            }
-            catch (DataAlreadyExistsException e)
-            {
-                return BadRequest(e.Message.ToString());
+                return StatusCode((int)HttpStatusCode.Conflict);
             }
             catch (Exception e)
             {
@@ -108,7 +109,7 @@ namespace Library.Controllers.API
                 };
                 await Task.Run(
                     () => _authorService.UpdateAuthor(authorId, author));
-                return Ok();
+                return NoContent();
             }
             catch (ArgumentNullException e)
             {
@@ -132,7 +133,7 @@ namespace Library.Controllers.API
             {
                 await Task.Run(
                     () => _authorService.DeleteAuthor(authorId));
-                return Ok(authorId);
+                return NoContent();
             }
             catch (DataNotFoundException e)
             {

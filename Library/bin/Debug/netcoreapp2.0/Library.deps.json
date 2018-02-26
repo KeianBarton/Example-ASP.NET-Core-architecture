@@ -23,6 +23,7 @@
     ".NETCoreApp,Version=v2.0": {
       "Library/1.0.0": {
         "dependencies": {
+          "Library.CompositionRoot": "1.0.0",
           "Library.Domain": "1.0.0",
           "Library.Services": "1.0.0",
           "Microsoft.AspNetCore.All": "2.0.5",
@@ -4096,6 +4097,18 @@
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
       },
+      "Library.CompositionRoot/1.0.0": {
+        "dependencies": {
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "3.2.0",
+          "Library.Services": "1.0.0"
+        },
+        "runtime": {
+          "Library.CompositionRoot.dll": {}
+        },
+        "compile": {
+          "Library.CompositionRoot.dll": {}
+        }
+      },
       "Library.Domain/1.0.0": {
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "3.2.0",
@@ -6460,6 +6473,11 @@
       "sha512": "sha512-W6ZZ0/o7+3Qb77mRAQyLjPudHG3OMeeQ4p9yY13PUdJArmRCx2cLMm5F4tpIjJXxzHC0ew0oK7DMDGILMdfCnw==",
       "path": "windowsazure.storage/8.1.4",
       "hashPath": "windowsazure.storage.8.1.4.nupkg.sha512"
+    },
+    "Library.CompositionRoot/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Library.Domain/1.0.0": {
       "type": "project",

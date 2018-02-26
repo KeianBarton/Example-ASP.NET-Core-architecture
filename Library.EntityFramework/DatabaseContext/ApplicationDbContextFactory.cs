@@ -10,7 +10,10 @@ namespace Library.EntityFramework.DatabaseContext
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             // TODO: To get this working with integration tests, you have to place the
-            // appsettings.json file for Persistence in bin/debug
+            // appsettings.json file for IntegrationTests in
+            //        Library.IntegrationTests/bin/debug/netcoreapp2.0/appsettings.json
+            // Get normal EF migrations working by placing appsettings.json file in
+            //        Library/appsettings.json
             IConfigurationRoot configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
