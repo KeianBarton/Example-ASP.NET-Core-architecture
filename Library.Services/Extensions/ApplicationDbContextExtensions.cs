@@ -3,7 +3,7 @@ using Library.EntityFramework.DatabaseContext;
 using System;
 using System.Collections.Generic;
 
-namespace Library.EntityFramework.Seeding
+namespace Library.Services.Extensions
 {
     public static class ApplicationDbContextExtensions
     {

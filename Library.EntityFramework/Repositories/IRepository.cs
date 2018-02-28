@@ -5,11 +5,13 @@ namespace Library.EntityFramework.Repositories
 {
     public interface IRepository<T> where T : class
     {
-        void Create(T item);
+        Guid Create(T item);
 
         IEnumerable<T> ReadAll();
 
         T Read(Guid id);
+
+        IEnumerable<T> Read(Func<T, bool> predicate);
 
         void Update(T item);
 

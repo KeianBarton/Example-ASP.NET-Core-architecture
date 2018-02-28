@@ -16,9 +16,10 @@ namespace Library.EntityFramework.Repositories
             _context = context;
         }
 
-        public void Create(Author author)
+        public Guid Create(Author author)
         {
             _context.Authors.Add(author);
+            return author.Id;
         }
 
         public void Delete(Guid authorId)
@@ -31,6 +32,12 @@ namespace Library.EntityFramework.Repositories
         {
             return _context.Authors.Include(a => a.Books)
                 .SingleOrDefault(a => a.Id == authorId);
+        }
+
+        public IEnumerable<Author> Read(Func<Author, bool> predicate)
+        {
+            return _context.Authors.Include(a => a.Books)
+                .Where(predicate);
         }
 
         public IEnumerable<Author> ReadAll()

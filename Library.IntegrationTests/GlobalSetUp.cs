@@ -1,5 +1,5 @@
 ﻿using Library.EntityFramework.DatabaseContext;
-using Library.EntityFramework.Seeding;
+using Library.Services.Extensions;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;

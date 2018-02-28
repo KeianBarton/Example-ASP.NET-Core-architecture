@@ -42,7 +42,6 @@ namespace Library.IntegrationTests.EntityFramework.Repositories
             // Arrange
             var author = new Author
             {
-                Id = new Guid(),
                 Books = new List<Book>(),
                 DateOfBirth = new DateTimeOffset(),
                 FirstName = "John",
@@ -52,12 +51,13 @@ namespace Library.IntegrationTests.EntityFramework.Repositories
             var numberOfAuthorsBeforeChanges = _context.Authors.Count();
 
             // Act
-            _authorRepository.Create(author);
+            var id = _authorRepository.Create(author);
             _unitOfWork.Complete();
 
             // Assert
             var result = _context.Authors.ToList();
             Assert.That(result, Has.Count.EqualTo(numberOfAuthorsBeforeChanges + 1));
+            Assert.AreNotEqual(new Guid(), id);
         }
 
         [Test]
@@ -125,6 +125,48 @@ namespace Library.IntegrationTests.EntityFramework.Repositories
             // Assert
             Assert.IsNotNull(result);
             Assert.IsNotNull(result.Books);
+        }
+
+        [Test]
+        public void Read_WhenUsingPredicate_ShouldFilterAuthorsAndBooksFromDatabase()
+        {
+            // Arrange
+            var books = new List<Book>() {
+                new Book() { Id = new Guid(), Title= "Foo" , Description = "Foo" }
+            };
+            var author1 = new Author
+            {
+                Id = new Guid(),
+                Books = books,
+                DateOfBirth = new DateTimeOffset(),
+                FirstName = "John",
+                LastName = "Smith",
+                Genre = "Adventure"
+            };
+            var author2 = new Author
+            {
+                Id = new Guid(),
+                Books = new List<Book>(),
+                DateOfBirth = new DateTimeOffset(),
+                FirstName = "Jacob",
+                LastName = "Smith",
+                Genre = "Horror"
+            };
+            _context.Authors.RemoveRange(_context.Authors);
+            _context.Authors.Add(author1);
+            _context.Authors.Add(author2);
+            _context.SaveChanges();
+
+            // Act
+            var result1 = _authorRepository.Read(a => a.LastName == "Smith").ToList();
+            var result2 = _authorRepository.Read(a => a.FirstName == "John").ToList();
+            var result3 = _authorRepository.Read(a => a.Genre == "Action").ToList();
+
+            // Assert
+            Assert.That(result1, Has.Count.EqualTo(2));
+            Assert.That(result2, Has.Count.EqualTo(1));
+            Assert.That(result3, Has.Count.EqualTo(0));
+            Assert.IsNotNull(result1.Single(a => a.Id == author1.Id).Books);
         }
 
         [Test]

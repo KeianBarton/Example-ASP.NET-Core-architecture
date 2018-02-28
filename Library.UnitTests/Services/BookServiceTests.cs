@@ -1,4 +1,6 @@
-﻿using Library.Domain.Entities;
+﻿using AutoMapper;
+using Library.Domain.Dtos;
+using Library.Domain.Entities;
 using Library.EntityFramework.DatabaseContext;
 using Library.EntityFramework.Exceptions;
 using Library.Services;
@@ -13,14 +15,16 @@ namespace Library.UnitTests.Services
     [TestFixture]
     public class BookServiceTests
     {
+        private Mock<IMapper> _mapperMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
         private BookService _bookService;
 
         [SetUp]
         public void SetUp()
         {
+            _mapperMock = new Mock<IMapper>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _bookService = new BookService(_unitOfWorkMock.Object);
+            _bookService = new BookService(_unitOfWorkMock.Object, _mapperMock.Object);
         }
 
         [TearDown]
@@ -31,105 +35,71 @@ namespace Library.UnitTests.Services
         }
 
         [Test]
-        public void AddBookForAuthor_WhenCalledWithInvalidArgument_ShouldThrowException()
-        {
-            // Act / Assert
-            Assert.Throws<ArgumentNullException>(
-                () => _bookService.AddBookForAuthor(new Guid(), null));
-        }
-
-        [Test]
         public void AddBookForAuthor_WhenValidRequest_ShouldCallRepositoryCreate()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
-            var book = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
+            var bookDto = new BookDto() { Description = "Scary book", Title = "It" };
+            var book = new Book() { Description = "Scary book", Title = "It" };
+            var author = new Author();
+            _mapperMock.Setup(m => m.Map<Book>(It.IsAny<BookDto>()))
+                .Returns(book);
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act
-            _bookService.AddBookForAuthor(author.Id, book);
+            _bookService.AddBookForAuthor(new Guid(), bookDto);
 
             // Assert
             Assert.That(author.Books, Has.Count.EqualTo(1));
         }
 
         [Test]
-        public void AddBookForAuthor_WhenArgumentIsInvalid_ShouldThrowException()
+        public void AddBookForAuthor_WhenDataIsInvalid_ShouldThrowException()
         {
+            // Arrange
+            var bookDto = new BookDto
+            {
+                Title = "Only completed field"
+            };
+
             // Act / Assert
-            Assert.Throws<ArgumentNullException>(
-                () => _bookService.AddBookForAuthor(new Guid(), null));
+            Assert.Throws<InvalidDataException>(
+                () => _bookService.AddBookForAuthor(new Guid(), bookDto));
         }
 
         [Test]
         public void AddBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Arrange
+            var bookDto = new BookDto() { Description = "Scary book", Title = "It" };
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
-                () => _bookService.AddBookForAuthor(new Guid(), new Book()));
+                () => _bookService.AddBookForAuthor(new Guid(), bookDto));
         }
 
         [Test]
         public void AddBookForAuthor_WhenAuthorAlreadyHasBook_ShouldThrowException()
         {
             // Arrange
-            var book = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>() { book },
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var bookDto = new BookDto() { Description = "Scary book", Title = "It" };
+            var book = new Book() { Description = "Scary book", Title = "It" };
+            var author = new Author() { Books = new List<Book>() { book } };
+            _mapperMock.Setup(m => m.Map<Book>(It.IsAny<BookDto>()))
+                .Returns(book);
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
             Assert.Throws<DataAlreadyExistsException>(
-                () => _bookService.AddBookForAuthor(author.Id, book));
+                () => _bookService.AddBookForAuthor(author.Id, bookDto));
         }
 
         [Test]
         public void DeleteBook_WhenBookExists_ShouldDeleteBookFromDatabase()
         {
             // Arrange
-            var book = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>() { book },
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var book = new Book();
+            var author = new Author() { Books = new List<Book>() { book } };
             _unitOfWorkMock.Setup(u => u.Books.Read(It.IsAny<Guid>())).Returns(book);
             _unitOfWorkMock.Setup(u => u.Books.Delete(It.IsAny<Guid>())).Verifiable();
 
@@ -144,13 +114,7 @@ namespace Library.UnitTests.Services
         public void DeleteBook_WhenBookNotInDatabase_ShouldThrowException()
         {
             // Arrange
-            var book = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
-            // Arrange
+            var book = new Book();
             _unitOfWorkMock.Setup(u => u.Books.Read(It.IsAny<Guid>())).Returns((Book)null);
 
             // Act / Assert
@@ -162,21 +126,8 @@ namespace Library.UnitTests.Services
         public void GetBookForAuthor_WhenBookExists_ShouldGetBookFromDatabase()
         {
             // Arrange
-            var book = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>() { book },
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var book = new Book();
+            var author = new Author { Books = new List<Book>() { book } };
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act
@@ -184,7 +135,7 @@ namespace Library.UnitTests.Services
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<Book>(result);
+            Assert.IsInstanceOf<BookDto>(result);
         }
 
         [Test]
@@ -202,15 +153,7 @@ namespace Library.UnitTests.Services
         public void GetBookForAuthor_WhenAuthorDoesNotHaveBookInDatabase_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
@@ -222,31 +165,15 @@ namespace Library.UnitTests.Services
         public void GetBooksForAuthor_WhenAuthorsBooksExist_ShouldBeTakenFromDatabase()
         {
             // Arrange
-            var book1 = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
-            var book2 = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book 2",
-                Description = "Descriptive text 2"
-            };
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>() { book1, book2 },
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var book1 = new Book();
+            var book2 = new Book();
+            var author = new Author() { Books = new List<Book>() { book1, book2 } };
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _mapperMock.Setup(m => m.Map<Book, BookDto>(It.IsAny<Book>()))
+                .Returns(new BookDto());
 
             // Act
-            var result = _bookService.GetBooksForAuthor(author.Id);
+            var result = _bookService.GetBooksForAuthor(author.Id).ToList();
 
             // Assert
             Assert.That(result, Has.Count.EqualTo(2));
@@ -267,15 +194,7 @@ namespace Library.UnitTests.Services
         public void GetBooksForAuthor_WhenAuthorHasNoBooksInDatabase_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
@@ -284,72 +203,66 @@ namespace Library.UnitTests.Services
         }
 
         [Test]
-        public void UpdateBookForAuthor_WhenCalledWithInvalidArgument_ShouldThrowException()
+        public void UpdateBookForAuthor_WhenCalledWithInvalidData_ShouldThrowException()
         {
+            // Arrange
+            var bookDto = new BookDto
+            {
+                Title = "Only completed field"
+            };
+
             // Act / Assert
-            Assert.Throws<ArgumentNullException>(
-                () => _bookService.UpdateBookForAuthor(new Guid(), null));
+            Assert.Throws<InvalidDataException>(
+                () => _bookService.UpdateBookForAuthor(new Guid(), new Guid(), bookDto));
         }
 
         [Test]
         public void UpdateBookForAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Arrange
+            var bookDto = new BookDto() { Description = "Scary book", Title = "It" };
+            var book = new Book() { Description = "Scary book", Title = "It" };
+            _mapperMock.Setup(m => m.Map<Book>(It.IsAny<BookDto>()))
+                .Returns(book);
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
-                () => _bookService.UpdateBookForAuthor(new Guid(), new Book()));
+                () => _bookService.UpdateBookForAuthor(new Guid(), new Guid(), bookDto));
         }
 
         [Test]
         public void UpdateBookForAuthor_WhenBookDoesNotExist_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var bookDto = new BookDto() { Description = "Scary book", Title = "It" };
+            var book = new Book() { Description = "Scary book", Title = "It" };
+            var author = new Author();
+            _mapperMock.Setup(m => m.Map<Book>(It.IsAny<BookDto>()))
+                .Returns(book);
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act / Assert
             Assert.Throws<DataNotFoundException>(
-                () => _bookService.UpdateBookForAuthor(author.Id, new Book()));
+                () => _bookService.UpdateBookForAuthor(author.Id, new Guid(), bookDto));
         }
 
         [Test]
         public void UpdateBookForAuthor_WhenCalled_ShouldUpdateBookForAuthorInDatabase()
         {
             // Arrange
-            var book = new Book
-            {
-                Id = new Guid(),
-                Title = "Test Book",
-                Description = "Descriptive text"
-            };
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>() { book },
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var book = new Book() { Description = "Scary book", Title = "It" };
+            var author = new Author() { Books = new List<Book>() { book } };
+            _mapperMock.Setup(m => m.Map<Book>(It.IsAny<BookDto>()))
+                .Returns(book);
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             var newTitle = "New test book";
             var newDescription = "New description";
-            book.Title = newTitle;
-            book.Description = newDescription;
+            var bookDto = new BookDto() { Title = newTitle, Description = newDescription };
 
             // Act
-            _bookService.UpdateBookForAuthor(author.Id, book);
+            _bookService.UpdateBookForAuthor(author.Id, new Guid(), bookDto);
 
             // Assert
             Assert.AreEqual(newTitle, author.Books.First().Title);

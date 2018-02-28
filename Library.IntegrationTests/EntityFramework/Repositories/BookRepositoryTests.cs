@@ -150,6 +150,48 @@ namespace Library.IntegrationTests.EntityFramework.Repositories
         }
 
         [Test]
+        public void Read_WhenUsingPredicate_ShouldFilterBooksFromDatabase()
+        {
+            // Arrange
+            var book1 = new Book
+            {
+                Id = new Guid(),
+                Title = "Foo",
+                Description = "Bar"
+            };
+            var book2 = new Book
+            {
+                Id = new Guid(),
+                Title = "Bla",
+                Description = "Bar"
+            };
+            var author = new Author
+            {
+                Id = new Guid(),
+                Books = new List<Book>() { book1, book2 },
+                DateOfBirth = new DateTimeOffset(),
+                FirstName = "John",
+                LastName = "Smith",
+                Genre = "Adventure"
+            };
+            _context.Authors.RemoveRange(_context.Authors);
+            _context.Authors.Add(author);
+            _context.Books.Add(book1);
+            _context.Books.Add(book2);
+            _context.SaveChanges();
+
+            // Act
+            var result1 = _bookRepository.Read(a => a.Description == "Bar").ToList();
+            var result2 = _bookRepository.Read(a => a.Title == "Foo").ToList();
+            var result3 = _bookRepository.Read(a => a.Description == "Unknown").ToList();
+
+            // Assert
+            Assert.That(result1, Has.Count.EqualTo(2));
+            Assert.That(result2, Has.Count.EqualTo(1));
+            Assert.That(result3, Has.Count.EqualTo(0));
+        }
+
+        [Test]
         public void ReadAll_WhenNoBooksInDatabase_ShouldReturnEmptyList()
         {
             // Arrange

@@ -1,5 +1,4 @@
 ﻿using Library.Domain.Dtos;
-using Library.Domain.Entities;
 using Library.EntityFramework.Exceptions;
 using Library.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -26,17 +25,16 @@ namespace Library.Controllers.API
         {
             try
             {
-                var book = new Book()
-                {
-                    Title = bookDto.Title,
-                    Description = bookDto.Description
-                };
                 var result = await Task.Run(
-                    () => _bookService.AddBookForAuthor(authorId, book));
+                    () => _bookService.AddBookForAuthor(authorId, bookDto));
 
                 // TODO
                 var url = Url.Link("GetBookForAuthor", new { bookId = result, authorId });
-                return Created(url, book);
+                return Created(url, bookDto);
+            }
+            catch (InvalidDataException e)
+            {
+                return BadRequest(e.Message.ToString());
             }
             catch (DataNotFoundException e)
             {
@@ -58,9 +56,9 @@ namespace Library.Controllers.API
         {
             try
             {
-                await Task.Run(
-                    () => _bookService.DeleteBook(bookId));
-                return Ok(bookId);
+                await Task.Run(() =>
+                    _bookService.DeleteBook(bookId));
+                return NoContent();
             }
             catch (DataNotFoundException e)
             {
@@ -79,8 +77,8 @@ namespace Library.Controllers.API
         {
             try
             {
-                var book = await Task.Run(
-                    () => _bookService.GetBookForAuthor(authorId, bookId));
+                var book = await Task.Run(() =>
+                    _bookService.GetBookForAuthor(authorId, bookId));
                 return Ok(book);
             }
             catch (DataNotFoundException e)
@@ -101,8 +99,8 @@ namespace Library.Controllers.API
         {
             try
             {
-                var books = await Task.Run(
-                    () => _bookService.GetBooksForAuthor(authorId));
+                var books = await Task.Run(() =>
+                    _bookService.GetBooksForAuthor(authorId));
                 return Ok(books);
             }
             catch (DataNotFoundException e)
@@ -119,20 +117,15 @@ namespace Library.Controllers.API
         [HttpPut("{authorId}", Name = "UpdateBookForAuthor")]
         [Route("")]
         [Route("authors")]
-        public async Task<IActionResult> UpdateBookForAuthor(Guid authorId, BookDto bookDto)
+        public async Task<IActionResult> UpdateBookForAuthor(Guid authorId, Guid bookId, BookDto bookDto)
         {
             try
             {
-                var book = new Book()
-                {
-                    Description = bookDto.Description,
-                    Title = bookDto.Title
-                };
-                await Task.Run(
-                    () => _bookService.UpdateBookForAuthor(authorId, book));
-                return Ok();
+                await Task.Run(() =>
+                    _bookService.UpdateBookForAuthor(authorId, bookId, bookDto));
+                return NoContent();
             }
-            catch (ArgumentNullException e)
+            catch (InvalidDataException e)
             {
                 return BadRequest(e.Message.ToString());
             }

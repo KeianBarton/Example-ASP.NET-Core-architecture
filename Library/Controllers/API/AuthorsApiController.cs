@@ -1,11 +1,9 @@
 ﻿using Library.Domain.Dtos;
-using Library.Domain.Entities;
 using Library.EntityFramework.Exceptions;
 using Library.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -68,20 +66,16 @@ namespace Library.Controllers.API
         {
             try
             {
-                var author = new Author()
-                {
-                    DateOfBirth = authorDto.DateOfBirth,
-                    FirstName = authorDto.FirstName,
-                    LastName = authorDto.LastName,
-                    Genre = authorDto.Genre,
-                    Books = new List<Book>()
-                };
                 var result = await Task.Run(
-                    () => _authorService.AddAuthor(author));
+                    () => _authorService.AddAuthor(authorDto));
 
                 // TODO
-                var url = Url.Link("GetAuthor", new { authorId = result });
-                return Created(url, author);
+                var uri = Url.Link("GetAuthor", new { authorId = result });
+                return Created(uri, authorDto);
+            }
+            catch (InvalidDataException e)
+            {
+                return BadRequest(e.Message.ToString());
             }
             catch (DataAlreadyExistsException)
             {
@@ -99,19 +93,11 @@ namespace Library.Controllers.API
         {
             try
             {
-                var author = new Author()
-                {
-                    DateOfBirth = authorDto.DateOfBirth,
-                    FirstName = authorDto.FirstName,
-                    LastName = authorDto.LastName,
-                    Genre = authorDto.Genre,
-                    Books = new List<Book>()
-                };
                 await Task.Run(
-                    () => _authorService.UpdateAuthor(authorId, author));
+                    () => _authorService.UpdateAuthor(authorId, authorDto));
                 return NoContent();
             }
-            catch (ArgumentNullException e)
+            catch (InvalidDataException e)
             {
                 return BadRequest(e.Message.ToString());
             }

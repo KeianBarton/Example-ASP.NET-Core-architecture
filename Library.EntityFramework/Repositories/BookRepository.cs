@@ -15,9 +15,10 @@ namespace Library.EntityFramework.Repositories
             _context = context;
         }
 
-        public void Create(Book book)
+        public Guid Create(Book book)
         {
             _context.Books.Add(book);
+            return book.Id;
         }
 
         public void Delete(Guid bookId)
@@ -29,6 +30,11 @@ namespace Library.EntityFramework.Repositories
         public Book Read(Guid bookId)
         {
             return _context.Books.SingleOrDefault(a => a.Id == bookId);
+        }
+
+        public IEnumerable<Book> Read(Func<Book, bool> predicate)
+        {
+            return _context.Books.Where(predicate);
         }
 
         public IEnumerable<Book> ReadAll()

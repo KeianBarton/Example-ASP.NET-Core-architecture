@@ -1,4 +1,6 @@
-﻿using Library.Domain.Entities;
+﻿using AutoMapper;
+using Library.Domain.Dtos;
+using Library.Domain.Entities;
 using Library.EntityFramework.DatabaseContext;
 using Library.EntityFramework.Exceptions;
 using System;
@@ -10,24 +12,27 @@ namespace Library.Services
     public class BookService : IBookService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public BookService(IUnitOfWork unitOfWork)
+        public BookService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Guid AddBookForAuthor(Guid authorId, Book book)
+        public Guid AddBookForAuthor(Guid authorId, BookDto bookDto)
         {
-            if (book == null)
-                throw new ArgumentNullException();
+            if (!bookDto.IsValid)
+                throw new InvalidDataException();
 
             var author = _unitOfWork.Authors.Read(authorId);
             if (author == null)
                 throw new DataNotFoundException("Author not found");
 
-            if (author.Books.Any(b => b.Title == book.Title))
+            if (author.Books.Any(b => b.Title == bookDto.Title))
                 throw new DataAlreadyExistsException("Book already exists");
 
+            var book = _mapper.Map<Book>(bookDto);
             author.Books.Add(book);
             _unitOfWork.Complete();
             return book.Id;
@@ -36,6 +41,14 @@ namespace Library.Services
         public bool BookExists(Guid bookId)
         {
             return _unitOfWork.Books.Read(bookId) != null;
+        }
+
+        public bool BookExists(BookDto bookDto)
+        {
+            return _unitOfWork.Books.Read(b =>
+                b.Title == bookDto.Title &&
+                b.Description == bookDto.Description
+            ).Any();
         }
 
         public void DeleteBook(Guid bookId)
@@ -47,7 +60,7 @@ namespace Library.Services
             _unitOfWork.Complete();
         }
 
-        public Book GetBookForAuthor(Guid authorId, Guid bookId)
+        public BookDto GetBookForAuthor(Guid authorId, Guid bookId)
         {
             var author = _unitOfWork.Authors.Read(authorId);
 
@@ -58,10 +71,10 @@ namespace Library.Services
             if (book == null)
                 throw new DataNotFoundException("Book not found");
 
-            return book;
+            return _mapper.Map<Book, BookDto>(book);
         }
 
-        public IEnumerable<Book> GetBooksForAuthor(Guid authorId)
+        public IEnumerable<BookDto> GetBooksForAuthor(Guid authorId)
         {
             var author = _unitOfWork.Authors.Read(authorId);
 
@@ -71,24 +84,25 @@ namespace Library.Services
             if (!author.Books.Any())
                 throw new DataNotFoundException("No books found");
 
-            return author.Books;
+            return author.Books.Select(_mapper.Map<Book, BookDto>);
         }
 
-        public void UpdateBookForAuthor(Guid authorId, Book book)
+        public void UpdateBookForAuthor(Guid authorId, Guid bookId, BookDto bookDto)
         {
-            if (book == null)
-                throw new ArgumentNullException();
+            if (!bookDto.IsValid)
+                throw new InvalidDataException();
 
             var author = _unitOfWork.Authors.Read(authorId);
 
             if (author == null)
                 throw new DataNotFoundException("Author not found");
 
-            var bookDb = author.Books.SingleOrDefault(b => b.Id == book.Id);
+            var book = _mapper.Map<Book>(bookDto);
+            var bookDb = author.Books.SingleOrDefault(b => b.Id == bookId);
             if (bookDb == null)
                 throw new DataNotFoundException("Book not found");
 
-            bookDb.Modify(book.Title, book.Description);
+            bookDb.Modify(bookDto.Title, bookDto.Description);
             _unitOfWork.Complete();
         }
     }

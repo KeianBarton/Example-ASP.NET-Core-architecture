@@ -1,4 +1,6 @@
-﻿using Library.Domain.Entities;
+﻿using AutoMapper;
+using Library.Domain.Dtos;
+using Library.Domain.Entities;
 using Library.EntityFramework.DatabaseContext;
 using Library.EntityFramework.Exceptions;
 using System;
@@ -10,28 +12,39 @@ namespace Library.Services
     public class AuthorService : IAuthorService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public AuthorService(IUnitOfWork unitOfWork)
+        public AuthorService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public Guid AddAuthor(Author author)
+        public Guid AddAuthor(AuthorDto authorDto)
         {
-            if (author == null)
-                throw new ArgumentNullException();
+            if (!authorDto.IsValid)
+                throw new InvalidDataException();
 
-            if (AuthorExists(author.Id))
+            if (AuthorExists(authorDto))
                 throw new DataAlreadyExistsException("Author already exists");
 
-            _unitOfWork.Authors.Create(author);
+            var id = _unitOfWork.Authors.Create(_mapper.Map<Author>(authorDto));
             _unitOfWork.Complete();
-            return author.Id;
+            return id;
         }
 
         public bool AuthorExists(Guid authorId)
         {
             return _unitOfWork.Authors.Read(authorId) != null;
+        }
+
+        public bool AuthorExists(AuthorDto authorDto)
+        {
+            return _unitOfWork.Authors.Read(a =>
+                a.FirstName == authorDto.FirstName &&
+                a.LastName == authorDto.LastName &&
+                a.DateOfBirth == authorDto.DateOfBirth
+            ).Any();
         }
 
         public void DeleteAuthor(Guid authorId)
@@ -43,30 +56,31 @@ namespace Library.Services
             _unitOfWork.Complete();
         }
 
-        public Author GetAuthor(Guid authorId)
+        public AuthorDto GetAuthor(Guid authorId)
         {
             var author = _unitOfWork.Authors.Read(authorId);
 
             if (author == null)
                 throw new DataNotFoundException("Author not found");
 
-            return author;
+            return _mapper.Map<Author, AuthorDto>(author);
         }
 
-        public IEnumerable<Author> GetAuthors()
+        public IEnumerable<AuthorDto> GetAuthors()
         {
             var authors = _unitOfWork.Authors.ReadAll();
 
             if (!authors.Any())
                 throw new DataNotFoundException();
 
-            return authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+            return authors.Select(_mapper.Map<Author, AuthorDto>)
+                .OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
         }
 
-        public void UpdateAuthor(Guid id, Author author)
+        public void UpdateAuthor(Guid id, AuthorDto authorDto)
         {
-            if (author == null)
-                throw new ArgumentNullException();
+            if (!authorDto.IsValid)
+                throw new InvalidDataException();
 
             var authorDb = _unitOfWork.Authors.Read(id);
 
@@ -74,7 +88,7 @@ namespace Library.Services
                 throw new DataNotFoundException("Author not found");
 
             authorDb.Modify(
-                author.FirstName, author.LastName, author.DateOfBirth, author.Genre);
+                authorDto.FirstName, authorDto.LastName, authorDto.DateOfBirth, authorDto.Genre);
             _unitOfWork.Complete();
         }
     }

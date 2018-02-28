@@ -1,4 +1,6 @@
-﻿using Library.Domain.Entities;
+﻿using AutoMapper;
+using Library.Domain.Dtos;
+using Library.Domain.Entities;
 using Library.EntityFramework.DatabaseContext;
 using Library.EntityFramework.Exceptions;
 using Library.Services;
@@ -12,14 +14,16 @@ namespace Library.UnitTests.Services
     [TestFixture]
     public class AuthorServiceTests
     {
+        private Mock<IMapper> _mapperMock;
         private Mock<IUnitOfWork> _unitOfWorkMock;
         private AuthorService _authorService;
 
         [SetUp]
         public void SetUp()
         {
+            _mapperMock = new Mock<IMapper>();
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _authorService = new AuthorService(_unitOfWorkMock.Object);
+            _authorService = new AuthorService(_unitOfWorkMock.Object, _mapperMock.Object);
         }
 
         [TearDown]
@@ -30,49 +34,38 @@ namespace Library.UnitTests.Services
         }
 
         [Test]
-        public void AddAuthor_WhenCalledWithInvalidArgument_ShouldThrowException()
-        {
-            // Act / Assert
-            Assert.Throws<ArgumentNullException>(
-                () => _authorService.AddAuthor(null));
-        }
-
-        [Test]
         public void AddAuthor_WhenCalledWithInvalidData_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
+            var author = new AuthorDto
             {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
+                FirstName = "Only completed field"
             };
 
             // Act / Assert
-            Assert.Throws<ArgumentNullException>(
-                () => _authorService.AddAuthor(null));
+            Assert.Throws<InvalidDataException>(
+                () => _authorService.AddAuthor(author));
         }
 
         [Test]
         public void AddAuthor_WhenValidRequest_ShouldCallRepositoryCreate()
         {
             // Arrange
-            var author = new Author
+            var authorDto = new AuthorDto()
             {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
+                FirstName = "Stephen",
+                LastName = "King",
+                Genre = "Horror",
+                DateOfBirth = DateTimeOffset.Now
             };
-            _unitOfWorkMock.Setup(u => u.Authors.Create(It.IsAny<Author>())).Verifiable();
+            var author = new Author();
+            _unitOfWorkMock.Setup(u => u.Authors.Create(It.IsAny<Author>()))
+                .Verifiable();
+            _mapperMock.Setup(m => m.Map<Author>(It.IsAny<AuthorDto>()))
+                .Returns(author);
 
             // Act
-            _authorService.AddAuthor(author);
+            _authorService.AddAuthor(authorDto);
 
             // Assert
             _unitOfWorkMock.Verify(u => u.Authors.Create(author));
@@ -82,35 +75,26 @@ namespace Library.UnitTests.Services
         public void AddAuthor_WhenAuthorAlreadyInDatabase_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
+            var authorDto = new AuthorDto()
             {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
+                FirstName = "Stephen",
+                LastName = "King",
+                Genre = "Horror",
+                DateOfBirth = DateTimeOffset.Now
             };
-            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Func<Author, bool>>()))
+                .Returns(new List<Author>() { new Author() });
 
             // Act / Assert
             Assert.Throws<DataAlreadyExistsException>(
-                () => _authorService.AddAuthor(author));
+                () => _authorService.AddAuthor(authorDto));
         }
 
         [Test]
         public void AuthorExists_WhenCalledWithExistingAuthor_ShouldReturnTrue()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
             // Act
@@ -124,15 +108,7 @@ namespace Library.UnitTests.Services
         public void AuthorExists_WhenCalledWithoutExistingAuthor_ShouldReturnFalse()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act
@@ -146,15 +122,7 @@ namespace Library.UnitTests.Services
         public void DeleteAuthor_WhenAuthorExists_ShouldCallRepositoryDelete()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
             _unitOfWorkMock.Setup(u => u.Authors.Delete(It.IsAny<Guid>())).Verifiable();
 
@@ -169,15 +137,7 @@ namespace Library.UnitTests.Services
         public void DeleteAuthor_WhenAuthorNotInDatabase_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
@@ -189,38 +149,24 @@ namespace Library.UnitTests.Services
         public void GetAuthor_WhenAuthorExists_ShouldGetAuthorFromDatabase()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
+            _mapperMock.Setup(m => m.Map<Author>(It.IsAny<AuthorDto>()))
+                .Returns(author);
 
             // Act
             var result = _authorService.GetAuthor(author.Id);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<Author>(result);
+            Assert.IsInstanceOf<AuthorDto>(result);
         }
 
         [Test]
         public void GetAuthor_WhenAuthorNotInDatabase_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
+            var author = new Author();
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns((Author)null);
 
             // Act / Assert
@@ -232,24 +178,8 @@ namespace Library.UnitTests.Services
         public void GetAuthors_WhenAuthorsExist_ShouldBeTakenFromDatabase()
         {
             // Arrange
-            var author1 = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "John",
-                LastName = "Smith",
-                Genre = "Adventure"
-            };
-            var author2 = new Author
-            {
-                Id = new Guid(),
-                Books = new List<Book>(),
-                DateOfBirth = new DateTimeOffset(),
-                FirstName = "Jacob",
-                LastName = "Smith",
-                Genre = "Horror"
-            };
+            var author1 = new Author();
+            var author2 = new Author();
             var authors = new List<Author>() { author1, author2 };
             _unitOfWorkMock.Setup(u => u.Authors.ReadAll()).Returns(authors);
 
@@ -258,7 +188,7 @@ namespace Library.UnitTests.Services
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<IEnumerable<Author>>(result);
+            Assert.IsInstanceOf<IEnumerable<AuthorDto>>(result);
         }
 
         [Test]
@@ -273,21 +203,31 @@ namespace Library.UnitTests.Services
         }
 
         [Test]
-        public void UpdateAuthor_WhenCalledWithInvalidArgument_ShouldThrowException()
+        public void UpdateAuthor_WhenCalledWithInvalidData_ShouldThrowException()
         {
+            var author = new AuthorDto
+            {
+                FirstName = "Only completed field"
+            };
+
             // Act / Assert
-            Assert.Throws<ArgumentNullException>(
-                () => _authorService.UpdateAuthor(new Guid(), null));
+            Assert.Throws<InvalidDataException>(
+                () => _authorService.UpdateAuthor(new Guid(), author));
         }
 
         [Test]
         public void UpdateAuthor_WhenCalled_ShouldUpdateAuthorInDatabase()
         {
             // Arrange
+            var authorDto = new AuthorDto
+            {
+                DateOfBirth = new DateTimeOffset(),
+                FirstName = "John",
+                LastName = "Smith",
+                Genre = "Adventure"
+            };
             var author = new Author
             {
-                Id = new Guid(),
-                Books = new List<Book>(),
                 DateOfBirth = new DateTimeOffset(),
                 FirstName = "John",
                 LastName = "Smith",
@@ -295,25 +235,20 @@ namespace Library.UnitTests.Services
             };
             _unitOfWorkMock.Setup(u => u.Authors.Read(It.IsAny<Guid>())).Returns(author);
 
-            var books = new List<Book>() {
-                new Book() { Id = new Guid(), Title= "Foo" , Description = "Foo" }
-            };
             var dateOfBirth = new DateTimeOffset(DateTime.Now);
             var firstName = "Harry";
             var lastName = "Harry";
             var genre = "Horror";
 
-            author.Books = books;
-            author.DateOfBirth = dateOfBirth;
-            author.FirstName = firstName;
-            author.LastName = lastName;
-            author.Genre = genre;
+            authorDto.DateOfBirth = dateOfBirth;
+            authorDto.FirstName = firstName;
+            authorDto.LastName = lastName;
+            authorDto.Genre = genre;
 
             // Act
-            _authorService.UpdateAuthor(author.Id, author);
+            _authorService.UpdateAuthor(author.Id, authorDto);
 
             // Assert
-            Assert.AreEqual(books, author.Books);
             Assert.AreEqual(dateOfBirth, author.DateOfBirth);
             Assert.AreEqual(firstName, author.FirstName);
             Assert.AreEqual(lastName, author.LastName);
@@ -324,10 +259,9 @@ namespace Library.UnitTests.Services
         public void UpdateAuthor_WhenAuthorDoesNotExist_ShouldThrowException()
         {
             // Arrange
-            var author = new Author
+            var author = new AuthorDto
             {
-                Id = new Guid(),
-                Books = new List<Book>(),
+                Books = new List<BookDto>(),
                 DateOfBirth = new DateTimeOffset(),
                 FirstName = "John",
                 LastName = "Smith",
