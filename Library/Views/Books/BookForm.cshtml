@@ -1,0 +1,29 @@
+﻿@model BookEditViewModel
+@{
+    ViewData["Title"] = Model.Heading;
+}
+<h1>@Model.Heading</h1>
+<hr />
+@Html.AntiForgeryToken()
+<form asp-action="Model.Action" asp-controller="Books">
+    <p class="alert alert-info">All fields are <strong>required</strong>.</p>
+    <div class="form-group">
+        <label asp-for="@Model.Title" class="control-label" autofocus="autofocus"></label>
+        <input asp-for="@Model.Title" class="form-control">
+        <span asp-validation-for="@Model.Title"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Description" class="control-label"></label>
+        <input asp-for="@Model.Description" class="form-control">
+        <span asp-validation-for="@Model.Description"></span>
+    </div>
+    <div class="form-group">
+    <!-- add dropdown list populating author first name + last name AND, if two records the same, has (date of birth) -->
+        <label asp-for="@Model.AuthorId" class="control-label"></label>
+        <select asp-for="@Model.AuthorId" asp-items="@Model.Authors" class="form-control">
+            <option>Please select one</option>
+        </select>
+        <span asp-validation-for="@Model.AuthorId"></span>
+    </div>
+    <button type="submit" class="btn btn-primary submit-btn btn-lg">Save</button>
+</form>

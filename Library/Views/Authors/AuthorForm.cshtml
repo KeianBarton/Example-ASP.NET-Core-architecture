@@ -1,0 +1,31 @@
+﻿@model AuthorEditViewModel
+@{
+    ViewData["Title"] = Model.Heading;
+}
+<h1>@Model.Heading</h1>
+<hr />
+@Html.AntiForgeryToken()
+<form asp-action="Model.Action" asp-controller="Authors">
+    <p class="alert alert-info">All fields are <strong>required</strong>.</p>
+    <div class="form-group">
+        <label asp-for="@Model.FirstName" class="control-label" autofocus="autofocus"></label>
+        <input asp-for="@Model.FirstName" class="form-control">
+        <span asp-validation-for="@Model.FirstName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.LastName" class="control-label"></label>
+        <input asp-for="@Model.LastName" class="form-control">
+        <span asp-validation-for="@Model.LastName"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.DateOfBirth" class="control-label"></label>
+        <input asp-for="@Model.DateOfBirth" class="form-control">
+        <span asp-validation-for="@Model.DateOfBirth"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.Genre" class="control-label"></label>
+        <input asp-for="@Model.Genre" class="form-control">
+        <span asp-validation-for="@Model.Genre"></span>
+    </div>
+    <button type="submit" class="btn btn-primary submit-btn btn-lg">Save</button>
+</form>
